@@ -1,0 +1,24 @@
+{
+  "color": [
+    {
+      "name": "start_window_background",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "background",
+      "value": "#F5F5F5"
+    },
+    {
+      "name": "font_black",
+      "value": "#333333"
+    },
+    {
+      "name": "logout_button_font",
+      "value": "#E8755E"
+    },
+    {
+      "name": "logout_button_border",
+      "value": "#66E8755E"
+    }
+  ]
+}
