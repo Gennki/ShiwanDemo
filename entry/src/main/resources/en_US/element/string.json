@@ -11,6 +11,54 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "self_cleaning",
+      "value": "Self-cleaning"
+    },
+    {
+      "name": "wifi",
+      "value": "Wi-Fi"
+    },
+    {
+      "name": "upgrade",
+      "value": "Upgrade"
+    },
+    {
+      "name": "system_volume",
+      "value": "System volume"
+    },
+    {
+      "name": "sign_out",
+      "value": "Sign out"
+    },
+    {
+      "name": "bluetooth_device_management",
+      "value": "Bluetooth device management"
+    },
+    {
+      "name": "connected",
+      "value": "Connected"
+    },
+    {
+      "name": "material_box_pro",
+      "value": "Material box PRO"
+    },
+    {
+      "name": "drink_wan",
+      "value": "Drink Wan"
+    },
+    {
+      "name": "help",
+      "value": "Help"
+    },
+    {
+      "name": "not_playing",
+      "value": "Not playing"
+    },
+    {
+      "name": "music_volume",
+      "value": "Music volume"
     }
   ]
 }

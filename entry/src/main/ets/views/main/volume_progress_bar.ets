@@ -6,18 +6,18 @@ export struct VolumeProgressBar {
   //用来创建CanvasRenderingContext2D对象，通过在canvas中调用CanvasRenderingContext2D对象来绘制。
   private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
   max?: number = 10
+  radius?: Length = 12
   @State value?: number = 5
 
   build() {
     Canvas(this.context)
-      .width(331)
-      .height(49)
-      .borderRadius(12)
+      .width('100%')
+      .height('100%')
       .onReady(() => {
         this.onDraw()
       })
       .clip(true)
-      .borderRadius(12)
+      .borderRadius(this.radius)
       .backgroundColor(0xDEDEDE)
       .onTouch((event) => {
         if (event.type === TouchType.Move) {

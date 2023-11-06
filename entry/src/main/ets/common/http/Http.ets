@@ -20,7 +20,6 @@ export class HttpService {
 
   async getMenuListByCatalog(catalog: string, pageIndex: number, pageSize: number) {
     const url = HttpPath.getMenuListByCatalogPath();
-    // const url = "http://192.168.31.24:8080/hello"
     const timestamp = Date.now();
     const nonce = await randomString(10)
     const token = "EA248A0456528EF358EF209050CF0D16";

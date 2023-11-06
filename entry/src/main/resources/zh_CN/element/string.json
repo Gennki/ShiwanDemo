@@ -11,6 +11,54 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "self_cleaning",
+      "value": "自清洁"
+    },
+    {
+      "name": "wifi",
+      "value": "Wi-Fi"
+    },
+    {
+      "name": "upgrade",
+      "value": "升级"
+    },
+    {
+      "name": "system_volume",
+      "value": "系统音量"
+    },
+    {
+      "name": "sign_out",
+      "value": "退出登录"
+    },
+    {
+      "name": "bluetooth_device_management",
+      "value": "蓝牙设备管理"
+    },
+    {
+      "name": "connected",
+      "value": "已连接"
+    },
+    {
+      "name": "material_box_pro",
+      "value": "料盒PRO"
+    },
+    {
+      "name": "drink_wan",
+      "value": "饮万"
+    },
+    {
+      "name": "help",
+      "value": "使用帮助"
+    },
+    {
+      "name": "not_playing",
+      "value": "未在播放"
+    },
+    {
+      "name": "music_volume",
+      "value": "音乐音量"
     }
   ]
 }

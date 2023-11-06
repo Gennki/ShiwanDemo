@@ -13,6 +13,10 @@
       "value": "#333333"
     },
     {
+      "name": "font_grey",
+      "value": "#595550"
+    },
+    {
       "name": "logout_button_font",
       "value": "#E8755E"
     },

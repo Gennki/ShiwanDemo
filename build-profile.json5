@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\Leon.Qin\\.ohos\\config\\auto_debug_ShiwanDemo_com.example.shiwandemo_890086200300013267.cer",
+          "storePassword": "0000001B913FC422D1A5749679ADC632147E3479891C9289846189D654CA73D15ED6374CF2B0C28C2B4681",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BAFD997355B5E68BC9E5E9F22AFF602F56A68293662A41BB79C0F39A22F16B996F2E1CE2B16F9A1",
+          "profile": "C:\\Users\\Leon.Qin\\.ohos\\config\\auto_debug_ShiwanDemo_com.example.shiwandemo_890086200300013267.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\Leon.Qin\\.ohos\\config\\auto_debug_ShiwanDemo_com.example.shiwandemo_890086200300013267.p12"
+        }
+      }
+    ],
     "compileSdkVersion": 9,
     "compatibleSdkVersion": 9,
     "products": [
