@@ -1,4 +1,5 @@
-import { HttpService } from '../../common/http/Http'
+import { AIOTRepository } from '../../common/http/repository/AIOTRepository'
+import { Log } from '../../common/utils/Log'
 
 @Preview
 @Component
@@ -20,9 +21,10 @@ export struct Home {
           .height(84)
           .margin({ top: 5, right: 16 })
           .onClick(() => {
-            // promptAction.showToast({ message: '1111' })
-            // get("https://www.baidu.com")
-            HttpService.getInstance().getMenuListByCatalog("SCREEN_1003", 1, 10)
+            AIOTRepository.getInstance().getMenuListByCatalog("SCREEN_1003", 1, 10)
+              .then((value) => {
+                // value.list
+              })
           })
 
         Image($r('app.media.ic_box_disconnected'))

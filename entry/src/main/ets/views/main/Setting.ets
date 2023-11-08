@@ -1,5 +1,5 @@
 import { TopAndDownButton } from '../common/TopAndDownButton'
-import { VolumeProgressBar } from './volume_progress_bar'
+import { VolumeProgressBar } from './VolumeProgressBar'
 
 @Preview({
   width: 1280,

@@ -1,6 +1,6 @@
-import { Home } from '../views/main/home'
-import { MainNavigationBar } from '../views/main/main_navigation'
-import { Setting } from '../views/main/setting'
+import { Home } from '../views/main/Home'
+import { MainNavigationBar } from '../views/main/MainNavigation'
+import { Setting } from '../views/main/Setting'
 
 @Entry
 @Component
