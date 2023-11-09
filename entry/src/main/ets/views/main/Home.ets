@@ -1,7 +1,9 @@
+import { MenuListItem } from '../../beans/MenuListItem'
 import { AIOTRepository } from '../../common/http/repository/AIOTRepository'
 import { Log } from '../../common/utils/Log'
+import { MenuListCard } from '../common/MenuListCard'
 
-@Preview
+@Preview({ width: 1280, height: 400, dpi: 160 })
 @Component
 export struct Home {
   @State currentIndex: number = 0
@@ -21,10 +23,7 @@ export struct Home {
           .height(84)
           .margin({ top: 5, right: 16 })
           .onClick(() => {
-            AIOTRepository.getInstance().getMenuListByCatalog("SCREEN_1003", 1, 10)
-              .then((value) => {
-                // value.list
-              })
+
           })
 
         Image($r('app.media.ic_box_disconnected'))
@@ -105,23 +104,36 @@ struct Indicator {
 
 @Component
 struct MenuListWidget {
-  @Link @Watch('unIndexChanged') currentIndex: number
-  titles: string[]
+  private titles: string[]
   private controller = new TabsController()
+  @Link @Watch('onIndexChanged') currentIndex: number
+  @State menuList: MenuListItem[] = []
 
-  unIndexChanged() {
-    this.controller.changeIndex(this.currentIndex)
+  aboutToAppear() {
+    AIOTRepository.getInstance()
+      .getMenuListByCatalog("SCREEN_1003", 1, 10)
+      .then((value) => {
+        this.menuList = value.list;
+      })
   }
 
   build() {
     Tabs({ controller: this.controller }) {
-      ForEach(this.titles, (item: string) => {
+      ForEach(this.titles, () => {
         TabContent() {
-          Column() {
-            Text(item)
-          }.backgroundColor(0xFFFF00)
+          List({ space: 15 }) {
+            ForEach(this.menuList, (item) => {
+              ListItem() {
+                MenuListCard({ isCardSelected: true, menuListItem: item })
+              }
+            }, (item) => item.id)
+          }
+          .listDirection(Axis.Horizontal)
+          .alignListItem(ListItemAlign.Center)
+          .padding({ left: 20 })
           .width('100%')
           .height('100%')
+
         }.tabBar()
       }, (item: string) => item)
     }
@@ -131,5 +143,9 @@ struct MenuListWidget {
     .barHeight(0)
     .width('100%')
     .height('100%')
+  }
+
+  onIndexChanged() {
+    this.controller.changeIndex(this.currentIndex)
   }
 }

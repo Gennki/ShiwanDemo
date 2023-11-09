@@ -23,3 +23,4 @@ export interface PageInfo {
   pageSize: number
   totalSize: number
 }
+

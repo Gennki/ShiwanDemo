@@ -3,9 +3,9 @@ import { MenuListItem } from '../../beans/MenuListItem';
 
 @Preview
 @Component
-struct MenuListCard {
+export struct MenuListCard {
   @State isCardSelected: boolean = false
-  menuListItem: MenuListItem = {
+  @State menuListItem: MenuListItem = {
     "id": "20211201154729_7b5ec0223ee7fa600667e2d1cdb3df04",
     "menuId": "20211201154729_7b5ec0223ee7fa600667e2d1cdb3df04",
     "menuName": "麻婆豆腐",
@@ -34,19 +34,27 @@ struct MenuListCard {
           .fontWeight(FontWeight.Medium)
 
         Rating({
-          rating: parseFloat(parseFloat(this.menuListItem.score).toFixed(1)),
-
-        }).stars(5)
+          rating: this.roundDownOrHalf(this.menuListItem.score),
+          indicator: true
+        })
+          .stars(5)
           .starStyle({
             backgroundUri: "/images/ic_star_grey.png",
             foregroundUri: "/images/ic_star_light.png",
             secondaryUri: "/images/ic_star_half.png"
           })
+          .margin({ top: 5 })
+          .width(120)
+          .height(20)
 
-      }
+      }.alignItems(HorizontalAlign.Start)
+      .padding({ left: 20, bottom: 10 })
 
-    }.width(240)
+    }
+    .width(240)
     .height(240)
+    .clip(true)
+    .borderRadius(15)
     .alignContent(Alignment.BottomStart)
   }
 
@@ -63,6 +71,25 @@ struct MenuListCard {
       num = Math.floor(num);
     } else {
       num = Math.floor(num) + 0.5;
+    }
+    return num;
+  }
+
+  /**
+   * 将数字字符串转换为整数或者以.5结尾的小数，例如："4.7"->4.5,"4.2"->4
+   * @param input
+   * @returns
+   */
+  roundDownOrHalf(input: string): number {
+    let num = parseFloat(input)
+    if (isNaN(num)) {
+      throw new Error("输入的字符串不能转换为数字")
+    }
+    const decimal = num % 1
+    if (decimal < 0.5) {
+      num = Math.floor(num)
+    } else {
+      num = Math.floor(num) + 0.5
     }
     return num;
   }

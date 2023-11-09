@@ -6,9 +6,9 @@
         "type": "HarmonyOS",
         "material": {
           "certpath": "C:\\Users\\Leon.Qin\\.ohos\\config\\auto_debug_ShiwanDemo_com.example.shiwandemo_890086200300013267.cer",
-          "storePassword": "0000001B913FC422D1A5749679ADC632147E3479891C9289846189D654CA73D15ED6374CF2B0C28C2B4681",
+          "storePassword": "0000001B51038A204DD288BFC2CDF87C821593E4D35C4449885131A32D31F945CDAD53E14A3CEEA72F1BFF",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001BAFD997355B5E68BC9E5E9F22AFF602F56A68293662A41BB79C0F39A22F16B996F2E1CE2B16F9A1",
+          "keyPassword": "0000001BA01D64B9701A1A39B0D92CB6F7E7225B77D0BB4EA06A9097D016A17614C39294AF13905EB5D7E0",
           "profile": "C:\\Users\\Leon.Qin\\.ohos\\config\\auto_debug_ShiwanDemo_com.example.shiwandemo_890086200300013267.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "C:\\Users\\Leon.Qin\\.ohos\\config\\auto_debug_ShiwanDemo_com.example.shiwandemo_890086200300013267.p12"
