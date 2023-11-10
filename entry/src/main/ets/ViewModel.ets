@@ -2,7 +2,6 @@ export class ViewModel {
 }
 
 const appMap = {}
-const entryMap = {}
 const componentMap = {}
 
 export function createViewModelByApp<VM extends ViewModel>(ViewModelClass: new () => VM): VM {
@@ -16,15 +15,16 @@ export function createViewModelByApp<VM extends ViewModel>(ViewModelClass: new (
   return viewModel;
 }
 
-export function createViewModelByEntry<VM extends ViewModel>(caller: any, ViewModelClass: new () => VM): VM {
-  let viewModel;
-  if (!entryMap.hasOwnProperty(ViewModelClass.name)) {
-    viewModel = new ViewModelClass();
-    entryMap[ViewModelClass.name] = viewModel;
+export function createViewModelByEntry<VM extends ViewModel>(ViewModelClass: new () => VM): VM {
+  let viewModel: VM;
+  const storage = LocalStorage.GetShared();
+  if (storage.has(ViewModelClass.name)) {
+    viewModel = storage.get(ViewModelClass.name)
   } else {
-    viewModel = entryMap[ViewModelClass.name]
+    viewModel = new ViewModelClass();
+    storage.setOrCreate(ViewModelClass.name, viewModel)
   }
-  return viewModel;
+  return viewModel
 }
 
 export function createViewModelByComponent<VM extends ViewModel>(caller: any, ViewModelClass: new () => VM): VM {

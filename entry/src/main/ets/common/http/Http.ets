@@ -23,6 +23,9 @@ export class Http {
   }
 
   post(url: string, header: Object, extraData: string | Object | ArrayBuffer) {
+    Log.i(`url=>${url}`)
+    Log.i(`header=>${JSON.stringify(header)}`)
+    Log.i(`extraData=>${JSON.stringify(extraData)}`)
     const httpRequest = http.createHttp();
     return httpRequest.request(url, {
       method: http.RequestMethod.POST,

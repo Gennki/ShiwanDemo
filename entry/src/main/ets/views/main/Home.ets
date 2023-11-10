@@ -1,18 +1,15 @@
-import { MenuListItem } from '../../beans/MenuListItem'
-import { AIOTRepository } from '../../common/http/repository/AIOTRepository'
 import { Log } from '../../common/utils/Log'
+import { HomeViewModel } from '../../HomeViewModel'
+import { createViewModelByEntry } from '../../ViewModel'
 import { MenuListCard } from '../common/MenuListCard'
 
 @Preview({ width: 1280, height: 400, dpi: 160 })
 @Component
 export struct Home {
-  @State currentIndex: number = 0
-  private classification: string[] = ['肉禽', '蔬菜', '水产', '五谷', '净菜', '料包', '烹饪历史', '自创菜谱']
-
   build() {
     Column() {
       Row() {
-        Indicator({ titles: this.classification, currentIndex: $currentIndex })
+        Indicator()
           .layoutWeight(1)
           .margin({ top: 29 })
           .width('100%')
@@ -36,7 +33,7 @@ export struct Home {
       .width('100%')
       .height(108)
 
-      MenuListWidget({ titles: this.classification, currentIndex: $currentIndex })
+      MenuListWidget()
         .width('100%')
         .height('100%')
 
@@ -48,17 +45,25 @@ export struct Home {
 
 @Component
 struct Indicator {
-  @Link @Watch('unIndexChanged') currentIndex: number
-  titles: string[]
   private controller = new TabsController()
+  @State homeViewModel: HomeViewModel = createViewModelByEntry(HomeViewModel)
 
-  unIndexChanged() {
-    this.controller.changeIndex(this.currentIndex)
+  aboutToAppear() {
+    this.homeViewModel.currentTabIndex.addObserver(this, (state => {
+      this.controller.changeIndex(state);
+    }));
+  }
+
+  aboutToDisappear() {
+    this.homeViewModel.currentTabIndex.removeObserver(this)
   }
 
   build() {
     Tabs({ controller: this.controller }) {
-      ForEach(this.titles, (item: string, index: number) => {
+      ForEach(this.homeViewModel.classification, (item: {
+        title: string;
+        code: string;
+      }, index: number) => {
         TabContent() {
         }.tabBar(this.TabBuilder(index, item))
       }, (item: string) => item)
@@ -69,26 +74,29 @@ struct Indicator {
     .barPosition(BarPosition.Start)
     .animationDuration(0)
     .onChange((index: number) => {
-      this.currentIndex = index
+      this.homeViewModel.changeTab(index)
     })
   }
 
-  @Builder TabBuilder(index: number, name: string) {
+  @Builder TabBuilder(index: number, item: {
+    title: string;
+    code: string;
+  }) {
     Column() {
-      Text(name)
-        .fontColor(this.currentIndex === index ? 0x333333 : 0x828282)
-        .fontSize(this.currentIndex === index ? 32 : 26)
-        .fontWeight(this.currentIndex === index ? FontWeight.Bold : FontWeight.Regular)
+      Text(item.title)
+        .fontColor(this.homeViewModel.currentTabIndex.getState() === index ? 0x333333 : 0x828282)
+        .fontSize(this.homeViewModel.currentTabIndex.getState() === index ? 32 : 26)
+        .fontWeight(this.homeViewModel.currentTabIndex.getState() === index ? FontWeight.Bold : FontWeight.Regular)
       Divider()
         .linearGradient({ colors: [
           [0xFDA368, 0], [0xE9765F, 0.5]
         ], angle: 90 })
         .margin({ top: 12 })
-        .opacity(this.currentIndex === index ? 1 : 0)
+        .opacity(this.homeViewModel.currentTabIndex.getState() === index ? 1 : 0)
         .width(45)
         .height(5)
         .borderRadius(2.5)
-    }.margin({ left: this.getIndicatorMarginLeft(index, name) })
+    }.margin({ left: this.getIndicatorMarginLeft(index, item.title) })
   }
 
   getIndicatorMarginLeft(index: number, name: string): number {
@@ -104,25 +112,26 @@ struct Indicator {
 
 @Component
 struct MenuListWidget {
-  private titles: string[]
   private controller = new TabsController()
-  @Link @Watch('onIndexChanged') currentIndex: number
-  @State menuList: MenuListItem[] = []
+  @State homeViewModel: HomeViewModel = createViewModelByEntry(HomeViewModel)
 
   aboutToAppear() {
-    AIOTRepository.getInstance()
-      .getMenuListByCatalog("SCREEN_1003", 1, 10)
-      .then((value) => {
-        this.menuList = value.list;
-      })
+    this.homeViewModel.getMenuList()
+    this.homeViewModel.currentTabIndex.addObserver(this, (state => {
+      this.controller.changeIndex(state)
+    }));
+  }
+
+  aboutToDisappear() {
+    this.homeViewModel.currentTabIndex.removeObserver(this);
   }
 
   build() {
     Tabs({ controller: this.controller }) {
-      ForEach(this.titles, () => {
+      ForEach(this.homeViewModel.classification, () => {
         TabContent() {
           List({ space: 15 }) {
-            ForEach(this.menuList, (item) => {
+            ForEach(this.homeViewModel.menuList, (item) => {
               ListItem() {
                 MenuListCard({ isCardSelected: true, menuListItem: item })
               }
@@ -138,14 +147,9 @@ struct MenuListWidget {
       }, (item: string) => item)
     }
     .onChange((index: number) => {
-      this.currentIndex = index
+      this.homeViewModel.changeTab(index)
     })
     .barHeight(0)
     .width('100%')
-    .height('100%')
-  }
-
-  onIndexChanged() {
-    this.controller.changeIndex(this.currentIndex)
   }
 }

@@ -1,8 +1,11 @@
+import { createViewModelByEntry } from '../ViewModel'
 import { Home } from '../views/main/Home'
 import { MainNavigationBar } from '../views/main/MainNavigation'
 import { Setting } from '../views/main/Setting'
 
-@Entry
+const storage = LocalStorage.GetShared()
+
+@Entry(storage)
 @Component
 struct Index {
   @State selectedIndex: number = 0

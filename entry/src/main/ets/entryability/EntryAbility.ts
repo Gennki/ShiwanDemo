@@ -12,32 +12,17 @@ export default class EntryAbility extends UIAbility {
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
-    // Main window is created, set main page for this ability
-    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
-    windowStage.loadContent('pages/Index', (err, data) => {
-      if (err.code) {
-        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
-        return;
-      }
-      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');
-    });
+    const storage = new LocalStorage({})
+    windowStage.loadContent('pages/Index', storage);
 
-    windowStage.getMainWindow((err, data) => {
-      if (err.code) {
-        console.error('Failed to obtain the main window. Cause: ' + JSON.stringify(err));
-        return;
-      }
-      let windowClass = data;
-      let names = [];
-      windowClass.setWindowSystemBarEnable(names,(err)=>{
-        if (err.code) {
-          console.error('Failed to set the system bar to be visible. Cause:' + JSON.stringify(err));
-          return;
-        }
-        console.info('Succeeded in setting the system bar to be visible.');
-      });
-    })
+    // app全屏显示
+    windowStage.getMainWindow()
+      .then((data) => {
+        let windowClass = data;
+        let names = [];
+        windowClass.setWindowSystemBarEnable(names);
+      })
   }
 
   onWindowStageDestroy() {
