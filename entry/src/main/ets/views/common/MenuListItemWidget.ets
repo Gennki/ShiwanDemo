@@ -1,9 +1,7 @@
-import window from '@ohos.window';
-import { MenuListItem } from '../../beans/MenuListItem';
-
+import { MenuListItem } from '../../beans/MenuListItem'
 @Preview
 @Component
-export struct MenuListCard {
+export struct MenuListItemWidget {
   @State isCardSelected: boolean = false
   @State menuListItem: MenuListItem = {
     "id": "20211201154729_7b5ec0223ee7fa600667e2d1cdb3df04",
