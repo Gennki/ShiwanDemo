@@ -1,4 +1,4 @@
-import { Log } from '../../common/utils/Log'
+import { MenuListItem } from '../../beans/MenuListItem'
 import { HomeViewModel } from '../../HomeViewModel'
 import { createViewModelByEntry } from '../../ViewModel'
 import { MenuListCard } from '../common/MenuListCard'
@@ -6,6 +6,8 @@ import { MenuListCard } from '../common/MenuListCard'
 @Preview({ width: 1280, height: 400, dpi: 160 })
 @Component
 export struct Home {
+  @Provide currentTabIndex: number = 0
+
   build() {
     Column() {
       Row() {
@@ -46,16 +48,11 @@ export struct Home {
 @Component
 struct Indicator {
   private controller = new TabsController()
-  @State homeViewModel: HomeViewModel = createViewModelByEntry(HomeViewModel)
+  private homeViewModel: HomeViewModel = createViewModelByEntry(HomeViewModel)
+  @Consume @Watch("onIndexChanged") currentTabIndex: number
 
-  aboutToAppear() {
-    this.homeViewModel.currentTabIndex.addObserver(this, (state => {
-      this.controller.changeIndex(state);
-    }));
-  }
-
-  aboutToDisappear() {
-    this.homeViewModel.currentTabIndex.removeObserver(this)
+  onIndexChanged() {
+    this.controller.changeIndex(this.currentTabIndex);
   }
 
   build() {
@@ -74,7 +71,7 @@ struct Indicator {
     .barPosition(BarPosition.Start)
     .animationDuration(0)
     .onChange((index: number) => {
-      this.homeViewModel.changeTab(index)
+      this.currentTabIndex = index
     })
   }
 
@@ -84,15 +81,15 @@ struct Indicator {
   }) {
     Column() {
       Text(item.title)
-        .fontColor(this.homeViewModel.currentTabIndex.getState() === index ? 0x333333 : 0x828282)
-        .fontSize(this.homeViewModel.currentTabIndex.getState() === index ? 32 : 26)
-        .fontWeight(this.homeViewModel.currentTabIndex.getState() === index ? FontWeight.Bold : FontWeight.Regular)
+        .fontColor(this.currentTabIndex === index ? 0x333333 : 0x828282)
+        .fontSize(this.currentTabIndex === index ? 32 : 26)
+        .fontWeight(this.currentTabIndex === index ? FontWeight.Bold : FontWeight.Regular)
       Divider()
         .linearGradient({ colors: [
           [0xFDA368, 0], [0xE9765F, 0.5]
         ], angle: 90 })
         .margin({ top: 12 })
-        .opacity(this.homeViewModel.currentTabIndex.getState() === index ? 1 : 0)
+        .opacity(this.currentTabIndex === index ? 1 : 0)
         .width(45)
         .height(5)
         .borderRadius(2.5)
@@ -113,17 +110,19 @@ struct Indicator {
 @Component
 struct MenuListWidget {
   private controller = new TabsController()
-  @State homeViewModel: HomeViewModel = createViewModelByEntry(HomeViewModel)
+  private homeViewModel: HomeViewModel = createViewModelByEntry(HomeViewModel)
+  @Consume @Watch("onIndexChanged") currentTabIndex: number
+  @State menuList: MenuListItem[] = []
+
+  onIndexChanged() {
+    this.controller.changeIndex(this.currentTabIndex)
+  }
 
   aboutToAppear() {
     this.homeViewModel.getMenuList()
-    this.homeViewModel.currentTabIndex.addObserver(this, (state => {
-      this.controller.changeIndex(state)
-    }));
-  }
-
-  aboutToDisappear() {
-    this.homeViewModel.currentTabIndex.removeObserver(this);
+      .then((value) => {
+        this.menuList = value;
+      })
   }
 
   build() {
@@ -131,7 +130,7 @@ struct MenuListWidget {
       ForEach(this.homeViewModel.classification, () => {
         TabContent() {
           List({ space: 15 }) {
-            ForEach(this.homeViewModel.menuList, (item) => {
+            ForEach(this.menuList, (item) => {
               ListItem() {
                 MenuListCard({ isCardSelected: true, menuListItem: item })
               }
@@ -147,7 +146,7 @@ struct MenuListWidget {
       }, (item: string) => item)
     }
     .onChange((index: number) => {
-      this.homeViewModel.changeTab(index)
+      this.currentTabIndex = index
     })
     .barHeight(0)
     .width('100%')

@@ -3,19 +3,19 @@ import { Observer } from './Observer';
 export class Observable<T> {
   private observers: Observer<T>[] = [];
 
-  constructor(private state: T) {
+  constructor(private _value: T) {
   }
 
-  getState(): T {
-    return this.state;
+  get value(): T {
+    return this._value;
   }
 
-  setState(state: T): void {
-    this.state = state;
+  set value(value: T) {
+    this._value = value;
     this.notifyAll();
   }
 
-  addObserver(consumer: any, observer: (state: T) => void): void {
+  addObserver(consumer: any, observer: (value: T) => void): void {
     this.observers.push(new Observer(consumer, observer));
   }
 
@@ -25,7 +25,7 @@ export class Observable<T> {
 
   private notifyAll(): void {
     for (const observer of this.observers) {
-      observer.callback(this.state);
+      observer.callback(this.value);
     }
   }
 }

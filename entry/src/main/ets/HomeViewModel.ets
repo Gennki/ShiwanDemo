@@ -1,12 +1,9 @@
 import { MenuListItem } from './beans/MenuListItem';
 import { AIOTRepository } from './common/http/repository/AIOTRepository';
-import { Observable } from './Observable';
 import { ViewModel } from "./ViewModel";
 
+@Observed
 export class HomeViewModel extends ViewModel {
-  // 当前选中的tab位置
-  currentTabIndex = new Observable(0)
-  menuList: MenuListItem[] = []
   classification = [
     { title: "肉禽", code: "SCREEN_1001" },
     { title: "蔬菜", code: "SCREEN_1003" },
@@ -18,15 +15,11 @@ export class HomeViewModel extends ViewModel {
     { title: "自创菜谱", code: "SELF_CREATE" }
   ]
 
-  getMenuList() {
-    AIOTRepository.getInstance()
+  getMenuList(): Promise<MenuListItem[]> {
+    return AIOTRepository.getInstance()
       .getMenuListByCatalog("SCREEN_1003", 1, 10)
       .then((value) => {
-        this.menuList = value.list;
+        return value.list;
       })
-  }
-
-  changeTab(index: number) {
-    this.currentTabIndex.setState(index);
   }
 }
