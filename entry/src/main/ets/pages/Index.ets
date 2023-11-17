@@ -2,6 +2,11 @@ import { Home } from '../views/main/Home'
 import { MainNavigationBar } from '../views/main/MainNavigation'
 import { Setting } from '../views/main/Setting'
 
+@Preview({
+  width: 1280,
+  height: 400,
+  dpi: 160
+})
 @Entry
 @Component
 struct Index {

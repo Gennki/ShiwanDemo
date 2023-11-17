@@ -1,18 +1,21 @@
-import { MenuListItem } from '../../beans/MenuListItem'
-import { AIOTRepository } from '../../common/http/repository/AIOTRepository'
-import { Log } from '../../common/utils/Log'
-import { MenuListCard } from '../common/MenuListCard'
+import { homeViewModel } from '../../HomeViewModel'
+import { MenuIndicator } from '../common/MenuIndicator'
+import { MenuListWidget } from '../common/MenuListWidget'
 
 @Preview({ width: 1280, height: 400, dpi: 160 })
 @Component
 export struct Home {
-  @State currentIndex: number = 0
-  private classification: string[] = ['肉禽', '蔬菜', '水产', '五谷', '净菜', '料包', '烹饪历史', '自创菜谱']
+  @State @Watch('onIndexChanged') classifyIndex: number = 0 // 当前用户选中的分类
+  private controller = new TabsController()
+
+  onIndexChanged() {
+    this.controller.changeIndex(this.classifyIndex)
+  }
 
   build() {
     Column() {
       Row() {
-        Indicator({ titles: this.classification, currentIndex: $currentIndex })
+        MenuIndicator({ classifyIndex: $classifyIndex, controller: this.controller })
           .layoutWeight(1)
           .margin({ top: 29 })
           .width('100%')
@@ -36,9 +39,19 @@ export struct Home {
       .width('100%')
       .height(108)
 
-      MenuListWidget({ titles: this.classification, currentIndex: $currentIndex })
-        .width('100%')
-        .height('100%')
+      Tabs({ controller: this.controller }) {
+        ForEach(homeViewModel.classification, (item,index) => {
+          TabContent() {
+            MenuListWidget({ classifyIndex: index })
+          }.tabBar()
+        }, (item) => item.code)
+      }
+      .onChange((index: number) => {
+        this.classifyIndex = index
+      })
+      .barHeight(0)
+      .width('100%')
+      .height('100%')
 
     }.width('100%')
     .height('100%')
@@ -46,106 +59,8 @@ export struct Home {
 }
 
 
-@Component
-struct Indicator {
-  @Link @Watch('unIndexChanged') currentIndex: number
-  titles: string[]
-  private controller = new TabsController()
 
-  unIndexChanged() {
-    this.controller.changeIndex(this.currentIndex)
-  }
 
-  build() {
-    Tabs({ controller: this.controller }) {
-      ForEach(this.titles, (item: string, index: number) => {
-        TabContent() {
-        }.tabBar(this.TabBuilder(index, item))
-      }, (item: string) => item)
-    }
-    .width('100%')
-    .height('100%')
-    .barMode(BarMode.Scrollable)
-    .barPosition(BarPosition.Start)
-    .animationDuration(0)
-    .onChange((index: number) => {
-      this.currentIndex = index
-    })
-  }
 
-  @Builder TabBuilder(index: number, name: string) {
-    Column() {
-      Text(name)
-        .fontColor(this.currentIndex === index ? 0x333333 : 0x828282)
-        .fontSize(this.currentIndex === index ? 32 : 26)
-        .fontWeight(this.currentIndex === index ? FontWeight.Bold : FontWeight.Regular)
-      Divider()
-        .linearGradient({ colors: [
-          [0xFDA368, 0], [0xE9765F, 0.5]
-        ], angle: 90 })
-        .margin({ top: 12 })
-        .opacity(this.currentIndex === index ? 1 : 0)
-        .width(45)
-        .height(5)
-        .borderRadius(2.5)
-    }.margin({ left: this.getIndicatorMarginLeft(index, name) })
-  }
 
-  getIndicatorMarginLeft(index: number, name: string): number {
-    if (index == 0) {
-      return 46
-    } else if (name.length > 2) {
-      return 47
-    } else {
-      return 57
-    }
-  }
-}
 
-@Component
-struct MenuListWidget {
-  private titles: string[]
-  private controller = new TabsController()
-  @Link @Watch('onIndexChanged') currentIndex: number
-  @State menuList: MenuListItem[] = []
-
-  aboutToAppear() {
-    AIOTRepository.getInstance()
-      .getMenuListByCatalog("SCREEN_1003", 1, 10)
-      .then((value) => {
-        this.menuList = value.list;
-      })
-  }
-
-  build() {
-    Tabs({ controller: this.controller }) {
-      ForEach(this.titles, () => {
-        TabContent() {
-          List({ space: 15 }) {
-            ForEach(this.menuList, (item) => {
-              ListItem() {
-                MenuListCard({ isCardSelected: true, menuListItem: item })
-              }
-            }, (item) => item.id)
-          }
-          .listDirection(Axis.Horizontal)
-          .alignListItem(ListItemAlign.Center)
-          .padding({ left: 20 })
-          .width('100%')
-          .height('100%')
-
-        }.tabBar()
-      }, (item: string) => item)
-    }
-    .onChange((index: number) => {
-      this.currentIndex = index
-    })
-    .barHeight(0)
-    .width('100%')
-    .height('100%')
-  }
-
-  onIndexChanged() {
-    this.controller.changeIndex(this.currentIndex)
-  }
-}

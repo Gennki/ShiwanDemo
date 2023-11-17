@@ -1,13 +1,5 @@
 import http from '@ohos.net.http'
-import hilog from '@ohos.hilog'
-import { AppConstant } from '../constants/AppConstant'
-import { md5 } from '../utils/MD5'
-import { randomString } from '../utils/Random'
-import { HttpPath } from './HttpPath'
 import { Log } from '../utils/Log'
-import { Response } from './Response'
-import { AIOTMenuListResponse } from '../../beans/MenuListItem'
-import url from '@ohos.url'
 
 export class Http {
   private static instance: Http;

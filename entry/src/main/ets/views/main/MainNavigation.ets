@@ -1,4 +1,3 @@
-@Preview
 @Component
 export struct MainNavigationBar {
   @Link selectedIndex: number
@@ -90,3 +89,13 @@ struct TabItem {
     .borderRadius(6)
   }
 }
+
+// @Preview
+// @Component
+// struct MainNavigationPreview {
+//   @State selectedIndex: number = 0
+//
+//   build() {
+//     MainNavigationBar({ selectedIndex: $selectedIndex })
+//   }
+// }

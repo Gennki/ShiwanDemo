@@ -1,24 +1,9 @@
-import window from '@ohos.window';
-import { MenuListItem } from '../../beans/MenuListItem';
+import { MenuListItem } from '../../beans/MenuListItem'
 
-@Preview
 @Component
-export struct MenuListCard {
+export struct MenuListItemWidget {
   @State isCardSelected: boolean = false
-  @State menuListItem: MenuListItem = {
-    "id": "20211201154729_7b5ec0223ee7fa600667e2d1cdb3df04",
-    "menuId": "20211201154729_7b5ec0223ee7fa600667e2d1cdb3df04",
-    "menuName": "麻婆豆腐",
-    "time": "119",
-    "url": "https://tek-it-pub.oss-cn-shanghai.aliyuncs.com/upload/ecosystem/2023/03/21/2023032117010504e390c21787095f39e338b9a1aa8ada.jpg",
-    "videoUrl": "https://tek-it-pub.oss-cn-shanghai.aliyuncs.com/upload/ecosystem/2023/03/21/2023032117004127c7d4dbfe1166ac68e95f76782e2352.mp4",
-    "score": "4.7",
-    "goodsId": "14113594",
-    "isCleanMenu": false,
-    "goodsState": "0",
-    "menuVersion": "11.4",
-    "paidMenu": "0"
-  }
+  menuListItem: MenuListItem
 
   build() {
     Stack() {
@@ -58,23 +43,6 @@ export struct MenuListCard {
     .alignContent(Alignment.BottomStart)
   }
 
-  convertToNumber(input: string): number {
-    let num = parseFloat(input);
-    if (isNaN(num)) {
-      throw new Error("输入的字符串不能转换为数字");
-    }
-    if (num < 0 || num > 5) {
-      throw new Error("输入的数字必须在0到5之间");
-    }
-    let decimal = num % 1;
-    if (decimal < 0.5) {
-      num = Math.floor(num);
-    } else {
-      num = Math.floor(num) + 0.5;
-    }
-    return num;
-  }
-
   /**
    * 将数字字符串转换为整数或者以.5结尾的小数，例如："4.7"->4.5,"4.2"->4
    * @param input
@@ -92,5 +60,30 @@ export struct MenuListCard {
       num = Math.floor(num) + 0.5
     }
     return num;
+  }
+}
+
+
+@Preview({ title: "MenuListItemWidget" })
+@Component
+struct MenuListItemPreview {
+  build() {
+    MenuListItemWidget({
+      isCardSelected: false,
+      menuListItem: {
+        id: "20211201154729_7b5ec0223ee7fa600667e2d1cdb3df04",
+        menuId: "20211201154729_7b5ec0223ee7fa600667e2d1cdb3df04",
+        menuName: "麻婆豆腐",
+        time: "119",
+        url: "https://tek-it-pub.oss-cn-shanghai.aliyuncs.com/upload/ecosystem/2023/03/21/2023032117010504e390c21787095f39e338b9a1aa8ada.jpg",
+        videoUrl: "https://tek-it-pub.oss-cn-shanghai.aliyuncs.com/upload/ecosystem/2023/03/21/2023032117004127c7d4dbfe1166ac68e95f76782e2352.mp4",
+        score: "4.7",
+        goodsId: "14113594",
+        isCleanMenu: false,
+        goodsState: "0",
+        menuVersion: "11.4",
+        paidMenu: "0",
+      }
+    })
   }
 }

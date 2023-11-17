@@ -1,7 +1,6 @@
 import promptAction from '@ohos.promptAction';
 import { AIOTMenuListResponse } from '../../../beans/MenuListItem';
 import { AppConstant } from '../../constants/AppConstant';
-import { Log } from '../../utils/Log';
 import { md5 } from '../../utils/MD5';
 import { randomString } from '../../utils/Random';
 import { Http } from '../Http';
