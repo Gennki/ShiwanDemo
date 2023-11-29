@@ -1,3 +1,4 @@
+import { ControllerWidget } from '../views/common/ControllerWidget'
 import { Home } from '../views/main/Home'
 import { MainNavigationBar } from '../views/main/MainNavigation'
 import { Setting } from '../views/main/Setting'
@@ -34,7 +35,7 @@ struct Index {
         .height('100%')
         .zIndex(1)
     } else if (this.selectedIndex === 1) {
-      Home()
+      ControllerWidget()
         .layoutWeight(1)
         .height('100%')
         .zIndex(1)
